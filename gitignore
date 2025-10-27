@@ -1,20 +1,4 @@
-# ===== Database =====
-data/database.db
-data/order_logs.txt
-
-# ===== Payment Proofs =====
-logs/payment_proof/*
-
-# ===== Error Logs =====
-logs/error_logs.txt
-
-# ===== Config pribadi =====
-config.py
-
-# ===== Python Cache =====
-pycache/
-*.pyc
-
-# ===== Sistem lain =====
-*.log
-*.env
+.env
+*.db
+venv/
+__pycache__/
