@@ -12,6 +12,7 @@ def connect_db():
         shop_name TEXT,
         payment_method TEXT,
         payment_account TEXT,
+        Payment_qris
         payment_name TEXT
     )''')
 
@@ -35,10 +36,10 @@ def connect_db():
     conn.commit()
     conn.close()
 
-def add_owner(user_id, shop_name, payment_method, payment_account, payment_name):
+def add_owner(user_id, shop_name, payment_method, payment_account, payment_qr, payment_name):
     conn = sqlite3.connect("data/database.db")
     cursor = conn.cursor()
     cursor.execute("INSERT OR REPLACE INTO owners VALUES (?, ?, ?, ?, ?)",
-                   (user_id, shop_name, payment_method, payment_account, payment_name))
+                   (user_id, shop_name, payment_method, payment_account,payment_qr, payment_name))
     conn.commit()
     conn.close()
