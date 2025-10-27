@@ -1,48 +1,35 @@
-async def payment(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    await update.message.reply_text(
-        "💳 *Metode Pembayaran:*\n\n"
-        f"🏧 *DANA:* {DEFAULT_PAYMENT['dana']} (a/n {DEFAULT_PAYMENT['name']})\n"
-        f"📱 *QRIS:* [Klik di sini untuk QRIS]({DEFAULT_PAYMENT['qris']})",
-        parse_mode="Markdown",
-        disable_web_page_preview=False
-    )
-    write_log(f"{user.id} membuka menu /payment.")
+def get_desc(msg, name, price):
+    desc = msg.text
+    bot.send_message(msg.chat.id, "⚙️ Masukkan command akses (contoh: addprem3):")
+    bot.register_next_step_handler(msg, save_new_product, name, price, desc)
 
-# =====================================
-# COMMAND /logs (khusus owner)
-# =====================================
-async def logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    if user_id != OWNER_ID:
-        await update.message.reply_text("❌ Kamu tidak punya izin melihat log.")
+def save_new_product(msg, name, price, desc):
+    command = msg.text
+    conn = sqlite3.connect("data/database.db")
+    cur = conn.cursor()
+    cur.execute("INSERT INTO products (name, price, description, access_command) VALUES (?, ?, ?, ?)",
+                (name, price, desc, command))
+    conn.commit()
+    conn.close()
+    bot.send_message(msg.chat.id, f"✅ Produk '{name}' berhasil ditambahkan!")
+    bot.send_message(OWNER_ID, f"Produk baru ditambahkan:\n📦 {name}\n💰 Rp{price}\n⚙️ Command: {command}")
+
+# === CEK STATUS ORDER === #
+@bot.message_handler(func=lambda m: m.text == "📊 Order Status")
+def order_status(msg):
+    conn = sqlite3.connect("data/database.db")
+    cur = conn.cursor()
+    cur.execute("SELECT o.id, p.name, o.status, o.timestamp FROM orders o JOIN products p ON o.product_id = p.id WHERE o.user_id=? ORDER BY o.id DESC", (msg.from_user.id,))
+    orders = cur.fetchall()
+    conn.close()
+    if not orders:
+        bot.send_message(msg.chat.id, "📭 Belum ada pesanan aktif.")
         return
+    text = "📦 <b>Daftar Pesananmu:</b>\n\n"
+    for o in orders:
+        oid, pname, status, ts = o
+        text += f"• {pname} — <b>{status}</b>\n   🕒 {ts}\n"
+    bot.send_message(msg.chat.id, text)
 
-    if not os.path.exists(LOG_FILE):
-        await update.message.reply_text("📂 Belum ada log order yang tercatat.")
-        return
-
-    with open(LOG_FILE, "r", encoding="utf-8") as f:
-        log_content = f.read()[-4000:]  # kirim 4000 karakter terakhir agar tidak terlalu panjang
-
-    await update.message.reply_text(
-        f"📜 *Log Order Terbaru:*\n\n`\n{log_content}\n```",
-        parse_mode="Markdown"
-    )
-
-# =====================================
-# MAIN
-# =====================================
-def main():
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("payment", payment))
-    app.add_handler(CommandHandler("logs", logs))
-    app.add_handler(CallbackQueryHandler(button))
-
-    logging.info("🚀 GarfieldOrderBot aktif dengan sistem log order.")
-    app.run_polling()
-
-if name == "main":
-    main()
+print("🤖 GarfieldOrderBot berjalan...")
+bot.infinity_polling()
