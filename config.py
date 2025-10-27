@@ -10,4 +10,4 @@ DEFAULT_PAYMENT = {
 }
 
 SHOP_NAME = "Garfield Store"
-LOG_FILE = -1003282574590
+OWNER_GRUB_LINK = https://t.me/+mY8O_32NCm42Yzc1
