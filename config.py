@@ -1,11 +1,11 @@
 # Konfigurasi utama bot GarfieldOrderBot
 
-BOT_TOKEN = "1234567890:ABCDEF-TOKEN"
+BOT_TOKEN = "7978577832:AAHAHagcPe5Rigx-6qlE2u339i8zUzMgSlg"
 OWNER_ID = 6954401932
 
 DEFAULT_PAYMENT = {
-    "method": "DANA",
-    "account": "081219623569",
+    "method": "DANA / QRIS",
+    "account": "081219623569 / https://files.catbox.moe/5clazs.jpg",
     "name": "Lusiana Kurniawati"
 }
 
