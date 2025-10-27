@@ -1,0 +1,39 @@
+import sqlite3
+from datetime import datetime
+
+# Buat database
+conn = sqlite3.connect("database.db")
+c = conn.cursor()
+
+# Tabel users
+c.execute("""CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    telegram_id INTEGER,
+    username TEXT,
+    access TEXT,
+    created_at TEXT
+)""")
+
+# Tabel orders
+c.execute("""CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    product TEXT,
+    price INTEGER,
+    payment_method TEXT,
+    proof TEXT,
+    status TEXT,
+    created_at TEXT
+)""")
+
+# Tabel error_logs
+c.execute("""CREATE TABLE IF NOT EXISTS error_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    error_msg TEXT,
+    user_id INTEGER,
+    created_at TEXT
+)""")
+
+conn.commit()
+conn.close()
+print("Database database.db berhasil dibuat.")
