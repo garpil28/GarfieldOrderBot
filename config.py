@@ -10,4 +10,4 @@ DEFAULT_PAYMENT = {
 }
 
 SHOP_NAME = "Garfield Store"
-OWNER_GRUB_LINK = https://t.me/+mY8O_32NCm42Yzc1
+OWNER_GRUB_LINK = https://t.me/+mY80_32NCm42Yzc1
