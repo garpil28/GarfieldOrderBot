@@ -10,3 +10,4 @@ DEFAULT_PAYMENT = {
 }
 
 SHOP_NAME = "Garfield Store"
+LOG_FILE = 
