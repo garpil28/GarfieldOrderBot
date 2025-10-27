@@ -1,7 +1,7 @@
 # Konfigurasi utama bot GarfieldOrderBot
 
 BOT_TOKEN = "7978577832:AAHAHagcPe5Rigx-6qlE2u339i8zUzMgSlg"
-OWNER_ID = 6954401932
+OWNER_ID = 6954401932 ,6827875982
 
 DEFAULT_PAYMENT = {
     "method": "DANA / QRIS",
